@@ -1,0 +1,64 @@
+name: Compile PDFs
+
+on:
+  push: 
+    branches:
+      - main
+    paths-ignore:
+      - CHANGELOG.md
+      - LICENSE
+      - README.md
+      - renovate.json
+      - '.github/workflows/**'
+      - .releaserc.yaml
+      - 'package*.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    env:
+      TERM: dumb
+    container: texlive/texlive:latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Compile
+      run: make
+    - name: Move to folder
+      run: mkdir pages && mv cv.pdf output/
+    - name: Cache result
+      uses: actions/cache@v3
+      with:
+        path: output/cv.pdf
+        key: ${{ runner.os }}-output
+  
+  release:
+    needs:
+      - build
+    runs-on: ubuntu-20.04
+    env:
+      TERM: dumb
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish on GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: output
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm install
+      - name: Publish on GitHub releases
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     
