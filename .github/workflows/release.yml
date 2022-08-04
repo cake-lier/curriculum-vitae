@@ -1,4 +1,4 @@
-name: Compile PDFs
+name: Generate CV
 
 on:
   push: 
