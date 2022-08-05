@@ -3,7 +3,7 @@ name: Generate CV
 on:
   push: 
     branches:
-      - main
+      - master
     paths-ignore:
       - CHANGELOG.md
       - LICENSE
@@ -25,12 +25,12 @@ jobs:
     - name: Compile
       run: make
     - name: Move to folder
-      run: mkdir pages && mv cv.pdf output/
-    - name: Cache result
-      uses: actions/cache@v3
+      run: mkdir output && mv cv.pdf output/
+    - name: Upload output folder
+      uses: actions/upload-artifact@v3
       with:
-        path: output/cv.pdf
-        key: ${{ runner.os }}-output
+        name: output
+        path: output
   
   release:
     needs:
@@ -47,6 +47,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download output folder
+        uses: actions/download-artifact@v3
+        with:
+          name: output
+          path: output
       - name: Publish on GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:

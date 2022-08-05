@@ -1,13 +1,13 @@
-branches:
-  - 'main'
 plugins:
   - - '@semantic-release/commit-analyzer'
     - preset: conventionalcommits
   - '@semantic-release/release-notes-generator'
   - '@semantic-release/changelog'
-  - 'semantic-release-license'
   - - '@semantic-release/git'
     - assets:
         - CHANGELOG.md
-        - LICENSE
-  - '@semantic-release/github'
+  - - '@semantic-release/github'
+    - assets:
+        - path: "output/cv.pdf"
+          label: "Curriculum vitae"
+        
