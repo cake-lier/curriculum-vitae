@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/cake-lier/curriculum-vitae/compare/v1.0.1...v1.0.2) (2022-09-26)
+
+
+### Bug Fixes
+
+* correct social media accounts ([781fe02](https://github.com/cake-lier/curriculum-vitae/commit/781fe02f5077915a0d3dc7306efbfaa1f761541e))
+
 ## [1.0.1](https://github.com/cake-lier/curriculum-vitae/compare/v1.0.0...v1.0.1) (2022-08-05)
 
 
